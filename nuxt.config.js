@@ -14,6 +14,10 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
+  server: {
+    port: 3001,
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -30,7 +34,11 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/style-resources'],
+
+  styleResources: {
+    sass: ['~/assets/sass/variables.sass'],
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
