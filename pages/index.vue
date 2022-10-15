@@ -1,9 +1,9 @@
-<template>
-  <Tutorial />
-</template>
-
 <script>
 export default {
-  name: 'IndexPage',
+  middleware: [
+    function ({ redirect }) {
+      redirect('/catalog')
+    }
+  ]
 }
 </script>
