@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <FilterPanel :is-fetching="isLoadingFilters" class="filter-panel" />
-    <ProductList :is-fetching="isLoadingProducts" class="item-list" />
+    <FilterPanel class="filter-panel" />
+    <ProductList class="item-list" />
   </div>
 </template>
 
@@ -9,21 +9,6 @@
 import { mapActions } from 'vuex'
 export default {
   name: 'App',
-  data() {
-    return {
-      isLoadingFilters: true
-    }
-  },
-  async fetch() {
-    await this.$store.dispatch('products/fetchFilters')
-    this.isLoadingFilters = false
-    await this.$store.dispatch('products/fetchProducts')
-  },
-  computed: {
-    isLoadingProducts() {
-      return this.$fetchState.pending
-    }
-  },
   methods: {
     ...mapActions(['products/fetchProducts'])
   }

@@ -2,6 +2,7 @@
   <div class="filter-panel">
     <Loader v-if="isFetching" size="medium" />
     <CheckboxListSelector
+      v-if="!isFetching"
       property-name="category"
       :options="appliedFilters.category"
       :add-text-field="true"
@@ -10,12 +11,14 @@
       Категория
     </CheckboxListSelector>
     <RangeSelector
+      v-if="!isFetching"
       :limits="filters.price"
       @range-change="onRangeSelectionChange"
     >
       Цена
     </RangeSelector>
     <RadioListSelector
+      v-if="!isFetching"
       :options="filters.discount"
       @selection-change="onDiscountSelectionChange"
     >
@@ -38,17 +41,17 @@ export default {
     RangeSelector,
     Loader
   },
-  props: {
-    isFetching: {
-      type: Boolean,
-      required: true
-    }
+  async fetch() {
+    await this.$store.dispatch('products/fetchFilters')
   },
   computed: {
     ...mapGetters({
       appliedFilters: 'products/appliedFilters',
       filters: 'products/filters'
-    })
+    }),
+    isFetching() {
+      return this.$fetchState.pending
+    }
   },
   methods: {
     ...mapActions({ applyFilters: 'products/applyFilters' }),

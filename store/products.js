@@ -25,18 +25,24 @@ export const state = () => ({
     limit: 6,
   },
   pagesLoaded: 0,
+  canLoadMorePages: true,
 })
 
 export const getters = {
   products: (s) => s.products,
   appliedFilters: (s) => s.appliedFilters,
   filters: (s) => s.filters,
+  pagesLoaded: (s) => s.pagesLoaded,
+  canLoadMorePages: (s) => s.canLoadMorePages,
 }
 
 export const actions = {
-  async fetchProducts({ getters, commit }, page = 1) {
+  async fetchProducts({ getters, commit }, page) {
     try {
-      const { appliedFilters, filters } = getters
+      const { appliedFilters, filters, pagesLoaded, canLoadMorePages } = getters
+      if (!canLoadMorePages) return
+
+      page = page || pagesLoaded + 1
 
       let categories = appliedFilters.category
         .filter((x) => x.checked)
@@ -70,9 +76,7 @@ export const actions = {
       const res = await fetch(url)
       const json = await res.json()
 
-      // TODO: do i need this?
-      // if (json.length === 0) dispatch(updateCanLoadMoreProducts(false))
-      // else dispatch(updateCanLoadMoreProducts(true))
+      if (json.length === 0) commit('updateCanLoadMorePages', false)
 
       await devTimeout()
 
@@ -127,5 +131,9 @@ export const mutations = {
       },
       limit: 6,
     }
+  },
+
+  updateCanLoadMorePages(state, value) {
+    state.canLoadMorePages = value
   },
 }

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <Loader v-if="isFetching" size="large" />
-
-    <div v-if="!isFetching && items && items.length !== 0" class="item-list">
+    <div v-if="items && items.length !== 0" class="item-list">
       <ProductCard
         v-for="item of items"
         :key="item.id"
@@ -12,11 +10,17 @@
     </div>
 
     <div
-      v-if="!isFetching && !(items && items.length !== 0)"
+      v-if="!isFetching && items && items.length === 0"
       class="item-list-placeholder"
     >
       <span>Нет подходящих товаров</span>
     </div>
+
+    <Loader v-if="isFetching && canLoadMorePages" size="large" />
+
+    <client-only>
+      <BaseIntersector @intersection="loadMore" />
+    </client-only>
   </div>
 </template>
 
@@ -24,18 +28,26 @@
 import { mapGetters } from 'vuex'
 import ProductCard from './ProductCard.vue'
 import Loader from './UI/Loader.vue'
+import BaseIntersector from './BaseIntersector.vue'
+
 export default {
-  components: { ProductCard, Loader },
-  props: {
-    isFetching: {
-      type: Boolean,
-      required: true
-    }
+  components: { ProductCard, Loader, BaseIntersector },
+  async fetch() {
+    await this.$store.dispatch('products/fetchProducts')
   },
   computed: {
     ...mapGetters({
-      items: 'products/products'
-    })
+      items: 'products/products',
+      canLoadMorePages: 'products/canLoadMorePages'
+    }),
+    isFetching() {
+      return this.$fetchState.pending
+    }
+  },
+  methods: {
+    loadMore() {
+      if (!this.$fetchState.pending) this.$fetch()
+    }
   }
 }
 </script>

@@ -33,6 +33,10 @@ export default {
     '@nuxtjs/eslint-module',
   ],
 
+  env: {
+    REST_API_URL: 'http://localhost:3000/api/',
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/style-resources'],
 
