@@ -35,6 +35,7 @@ export const state = () => ({
   },
   pagesLoaded: 0,
   canLoadMorePages: true,
+  categoriesTextFilter: '',
 })
 
 export const getters = {
@@ -44,6 +45,7 @@ export const getters = {
   appliedFilters: (s) => s.appliedFilters,
   pagesLoaded: (s) => s.pagesLoaded,
   canLoadMorePages: (s) => s.canLoadMorePages,
+  categoriesTextFilter: (s) => s.categoriesTextFilter,
 }
 
 export const actions = {
@@ -124,6 +126,7 @@ export const actions = {
   resetFilters({ commit }) {
     commit('resetAppliedFilters')
     commit('resetFiltersToApply')
+    commit('updateCategoriesTextFilter', '')
   },
 }
 
@@ -171,5 +174,9 @@ export const mutations = {
 
   updateCanLoadMorePages(state, value) {
     state.canLoadMorePages = value
+  },
+
+  updateCategoriesTextFilter(state, value) {
+    state.categoriesTextFilter = value
   },
 }

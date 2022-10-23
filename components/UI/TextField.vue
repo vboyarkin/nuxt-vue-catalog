@@ -1,32 +1,33 @@
 <template>
   <div>
-    <input v-model="value" type="text" :placeholder="placeholder" />
-    <button @click="onClick">&#x2715;</button>
+    <input
+      type="text"
+      :value="value"
+      :placeholder="placeholder"
+      @input="onValueChange"
+    />
+    <button @click="resetValue">&#x2715;</button>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      default: ''
+    },
     placeholder: {
       type: String,
-      required: false,
       default: ''
     }
   },
-  data() {
-    return {
-      value: ''
-    }
-  },
-  watch: {
-    value(newval) {
-      this.$emit('value-change', newval)
-    }
-  },
   methods: {
-    onClick() {
-      this.value = ''
+    resetValue() {
+      this.$emit('input', '')
+    },
+    onValueChange(e) {
+      this.$emit('input', e.target.value)
     }
   }
 }

@@ -1,7 +1,11 @@
 <template>
   <div class="checkbox-contaier">
     <h4><slot></slot></h4>
-    <TextField v-if="addTextField" @value-change="onTextFieldValueChange" />
+    <TextField
+      v-if="addTextField"
+      :value="categoriesTextFilter"
+      @input="onTextFieldValueChange"
+    />
     <div v-for="(item, i) of filteredItems" :key="item.id" class="list-wrap">
       <input
         :id="'checkbox' + item.id"
@@ -15,6 +19,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 import TextField from './TextField.vue'
 
 export default {
@@ -32,22 +37,29 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      textFilter: ''
-    }
-  },
+  // data() {
+  //   return {
+  //     textFilter: ''
+  //   }
+  // },
   computed: {
+    ...mapGetters({
+      categoriesTextFilter: 'products/categoriesTextFilter'
+    }),
     filteredItems() {
       return this.options.filter((x) =>
-        x.option.toLowerCase().includes(this.textFilter.toLowerCase().trim())
+        x.option
+          .toLowerCase()
+          .includes(this.categoriesTextFilter.toLowerCase().trim())
       )
     }
   },
-  watch: {},
   methods: {
+    ...mapMutations({
+      updateCategoriesTextFilter: 'products/updateCategoriesTextFilter'
+    }),
     onTextFieldValueChange(value) {
-      this.textFilter = value
+      this.updateCategoriesTextFilter(value)
     },
     onCheckboxClick(e, i) {
       const newCheckedOptions = this.options.slice()
