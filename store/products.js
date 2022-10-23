@@ -162,8 +162,8 @@ export const mutations = {
       category: state.filters.category.map((x) => ({ ...x, checked: false })),
       discount: null,
       price: {
-        min: null,
-        max: null,
+        min: state.filters.price.min,
+        max: state.filters.price.max,
       },
       limit: 6,
     }

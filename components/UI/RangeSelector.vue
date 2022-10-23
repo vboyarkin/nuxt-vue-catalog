@@ -4,6 +4,7 @@
     <DoubleRange
       :min-value="limits.min"
       :max-value="limits.max"
+      :selected-range="selectedRange"
       @range-change="onRangeChange"
     />
   </div>
@@ -15,6 +16,21 @@ export default {
   components: { DoubleRange },
   props: {
     limits: {
+      type: Object,
+      default: () => ({
+        min: 0,
+        max: 1000
+      }),
+      min: {
+        type: Number,
+        required: true
+      },
+      max: {
+        type: Number,
+        required: true
+      }
+    },
+    selectedRange: {
       type: Object,
       default: () => ({
         min: 0,

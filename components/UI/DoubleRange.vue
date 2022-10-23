@@ -35,6 +35,18 @@ export default {
     maxValue: {
       type: Number,
       required: true
+    },
+    selectedRange: {
+      type: Object,
+      required: true,
+      min: {
+        type: Number,
+        required: true
+      },
+      max: {
+        type: Number,
+        required: true
+      }
     }
   },
   data() {
@@ -58,6 +70,13 @@ export default {
     }
   },
   watch: {
+    selectedRange: {
+      deep: true,
+      handler({ min, max }) {
+        this.leftValue = min
+        this.rightValue = max
+      }
+    },
     minValue(val) {
       this.leftValue = val
     },

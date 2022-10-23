@@ -13,6 +13,7 @@
     <RangeSelector
       v-if="!isFetching"
       :limits="filters.price"
+      :selected-range="filtersToApply.price"
       @range-change="onRangeSelectionChange"
     >
       Цена
