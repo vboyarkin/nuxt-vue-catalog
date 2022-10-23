@@ -1,56 +1,6 @@
-async function devTimeout() {
-  if (process.env.NODE_ENV === 'development')
-    await new Promise((resolve) => {
-      setTimeout(resolve, 700)
-    })
-}
+import { devTimeout } from '@/utils/helpers'
 
-export const state = () => ({
-  products: [],
-  filters: {
-    category: [],
-    discount: [],
-    price: {
-      min: null,
-      max: null,
-    },
-  },
-  filtersToApply: {
-    category: [],
-    discount: null,
-    price: {
-      min: null,
-      max: null,
-    },
-    limit: 6,
-  },
-  appliedFilters: {
-    category: [],
-    discount: null,
-    price: {
-      min: null,
-      max: null,
-    },
-    limit: 6,
-  },
-  pagesLoaded: 0,
-  canLoadMorePages: true,
-  isFetchingProducts: false,
-  categoriesTextFilter: '',
-})
-
-export const getters = {
-  products: (s) => s.products,
-  filters: (s) => s.filters,
-  filtersToApply: (s) => s.filtersToApply,
-  appliedFilters: (s) => s.appliedFilters,
-  pagesLoaded: (s) => s.pagesLoaded,
-  canLoadMorePages: (s) => s.canLoadMorePages,
-  categoriesTextFilter: (s) => s.categoriesTextFilter,
-  isFetchingProducts: (s) => s.isFetchingProducts,
-}
-
-export const actions = {
+export default {
   async fetchProductsNextPage({ getters, commit }, page) {
     try {
       const {
@@ -150,65 +100,5 @@ export const actions = {
   clearAndReloadProducts({ commit, dispatch }) {
     commit('clearProducts')
     dispatch('fetchProductsNextPage')
-  },
-}
-
-export const mutations = {
-  clearProducts(state) {
-    state.products = []
-    state.pagesLoaded = 0
-  },
-
-  addProductsPage(state, { products, pagesLoaded }) {
-    state.pagesLoaded = pagesLoaded
-    state.products = state.products.concat(products)
-  },
-
-  updateFilters(state, newFilters) {
-    state.filters = newFilters
-  },
-
-  updateFiltersToApply(state, newFilters) {
-    state.filtersToApply = newFilters
-  },
-
-  updateAppliedFilters(state, newFilters) {
-    state.appliedFilters = newFilters
-  },
-
-  resetAppliedFilters(state) {
-    state.appliedFilters = {
-      category: state.filters.category.map((x) => ({ ...x, checked: false })),
-      discount: null,
-      price: {
-        min: null,
-        max: null,
-      },
-      limit: 6,
-    }
-  },
-
-  resetFiltersToApply(state) {
-    state.filtersToApply = {
-      category: state.filters.category.map((x) => ({ ...x, checked: false })),
-      discount: null,
-      price: {
-        min: state.filters.price.min,
-        max: state.filters.price.max,
-      },
-      limit: 6,
-    }
-  },
-
-  updateCanLoadMorePages(state, value) {
-    state.canLoadMorePages = value
-  },
-
-  updateCategoriesTextFilter(state, value) {
-    state.categoriesTextFilter = value
-  },
-
-  updateIsFetchingProducts(state, value) {
-    state.isFetchingProducts = value
   },
 }
