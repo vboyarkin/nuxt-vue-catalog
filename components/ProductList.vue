@@ -10,13 +10,13 @@
     </div>
 
     <div
-      v-if="!isFetching && items && items.length === 0"
+      v-if="!isFetchingProducts && items && items.length === 0"
       class="item-list-placeholder"
     >
       <span>Нет подходящих товаров</span>
     </div>
 
-    <Loader v-if="isFetching && canLoadMorePages" size="large" />
+    <Loader v-if="isFetchingProducts && canLoadMorePages" size="large" />
 
     <client-only>
       <BaseIntersector @intersection="loadMore" />
@@ -33,20 +33,18 @@ import BaseIntersector from './BaseIntersector.vue'
 export default {
   components: { ProductCard, Loader, BaseIntersector },
   async fetch() {
-    await this.$store.dispatch('products/fetchProducts')
+    await this.$store.dispatch('products/fetchProductsNextPage')
   },
   computed: {
     ...mapGetters({
       items: 'products/products',
-      canLoadMorePages: 'products/canLoadMorePages'
-    }),
-    isFetching() {
-      return this.$fetchState.pending
-    }
+      canLoadMorePages: 'products/canLoadMorePages',
+      isFetchingProducts: 'products/isFetchingProducts'
+    })
   },
   methods: {
     loadMore() {
-      if (!this.$fetchState.pending) this.$fetch()
+      if (!this.isFetchingProducts) this.$fetch()
     }
   }
 }

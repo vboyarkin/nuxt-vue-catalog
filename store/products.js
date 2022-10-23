@@ -35,6 +35,7 @@ export const state = () => ({
   },
   pagesLoaded: 0,
   canLoadMorePages: true,
+  isFetchingProducts: false,
   categoriesTextFilter: '',
 })
 
@@ -46,13 +47,22 @@ export const getters = {
   pagesLoaded: (s) => s.pagesLoaded,
   canLoadMorePages: (s) => s.canLoadMorePages,
   categoriesTextFilter: (s) => s.categoriesTextFilter,
+  isFetchingProducts: (s) => s.isFetchingProducts,
 }
 
 export const actions = {
-  async fetchProducts({ getters, commit }, page) {
+  async fetchProductsNextPage({ getters, commit }, page) {
     try {
-      const { appliedFilters, filters, pagesLoaded, canLoadMorePages } = getters
-      if (!canLoadMorePages) return
+      const {
+        appliedFilters,
+        filters,
+        pagesLoaded,
+        canLoadMorePages,
+        isFetchingProducts,
+      } = getters
+      if (!canLoadMorePages || isFetchingProducts) return
+
+      commit('updateIsFetchingProducts', true)
 
       page = page || pagesLoaded + 1
 
@@ -88,14 +98,16 @@ export const actions = {
       const res = await fetch(url)
       const json = await res.json()
 
-      if (json.length === 0) commit('updateCanLoadMorePages', false)
-
       await devTimeout()
+
+      if (json.length === 0) commit('updateCanLoadMorePages', false)
 
       commit('addProductsPage', { products: json, pagesLoaded: query.page })
     } catch (err) {
       console.error('Failed to fetch products from API:')
       console.error(err)
+    } finally {
+      commit('updateIsFetchingProducts', false)
     }
   },
 
@@ -119,18 +131,34 @@ export const actions = {
     commit('updateFiltersToApply', newFilters)
   },
 
-  applyFilters({ getters, commit }) {
+  applyFilters({ commit, dispatch, getters }) {
+    if (getters.isFetchingProducts) return
+
     commit('updateAppliedFilters', getters.filtersToApply)
+    dispatch('clearAndReloadProducts')
   },
 
-  resetFilters({ commit }) {
+  resetFilters({ commit, dispatch, getters }) {
+    if (getters.isFetchingProducts) return
+
     commit('resetAppliedFilters')
     commit('resetFiltersToApply')
     commit('updateCategoriesTextFilter', '')
+    dispatch('clearAndReloadProducts')
+  },
+
+  clearAndReloadProducts({ commit, dispatch }) {
+    commit('clearProducts')
+    dispatch('fetchProductsNextPage')
   },
 }
 
 export const mutations = {
+  clearProducts(state) {
+    state.products = []
+    state.pagesLoaded = 0
+  },
+
   addProductsPage(state, { products, pagesLoaded }) {
     state.pagesLoaded = pagesLoaded
     state.products = state.products.concat(products)
@@ -178,5 +206,9 @@ export const mutations = {
 
   updateCategoriesTextFilter(state, value) {
     state.categoriesTextFilter = value
+  },
+
+  updateIsFetchingProducts(state, value) {
+    state.isFetchingProducts = value
   },
 }
