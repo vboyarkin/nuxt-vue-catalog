@@ -4,7 +4,7 @@
     <CheckboxListSelector
       v-if="!isFetching"
       property-name="category"
-      :options="appliedFilters.category"
+      :options="filtersToApply.category"
       :add-text-field="true"
       @selection-change="onCategorySelectionChange"
     >
@@ -24,12 +24,18 @@
     >
       Размер скидки
     </RadioListSelector>
+
+    <div class="filter-panel__buttons-container">
+      <BaseButton @click="applyFilters">Применить</BaseButton>
+      <BaseButton @click="resetFilters">Сбросить</BaseButton>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Loader from './UI/Loader.vue'
+import BaseButton from './UI/BaseButton.vue'
 import CheckboxListSelector from '@/components/UI/CheckboxListSelector.vue'
 import RadioListSelector from '@/components/UI/RadioListSelector.vue'
 import RangeSelector from '@/components/UI/RangeSelector.vue'
@@ -39,14 +45,15 @@ export default {
     CheckboxListSelector,
     RadioListSelector,
     RangeSelector,
-    Loader
+    Loader,
+    BaseButton
   },
   async fetch() {
     await this.$store.dispatch('products/fetchFilters')
   },
   computed: {
     ...mapGetters({
-      appliedFilters: 'products/appliedFilters',
+      filtersToApply: 'products/filtersToApply',
       filters: 'products/filters'
     }),
     isFetching() {
@@ -54,22 +61,26 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ applyFilters: 'products/applyFilters' }),
+    ...mapActions({
+      updateFiltersToApply: 'products/updateFiltersToApply',
+      resetFilters: 'products/resetFilters',
+      applyFilters: 'products/applyFilters'
+    }),
     onCategorySelectionChange(category) {
-      this.applyFilters({
-        ...this.appliedFilters,
+      this.updateFiltersToApply({
+        ...this.filtersToApply,
         category
       })
     },
     onDiscountSelectionChange(discount) {
-      this.applyFilters({
-        ...this.appliedFilters,
+      this.updateFiltersToApply({
+        ...this.filtersToApply,
         discount
       })
     },
     onRangeSelectionChange(min, max) {
-      this.applyFilters({
-        ...this.appliedFilters,
+      this.updateFiltersToApply({
+        ...this.filtersToApply,
         price: { min, max }
       })
     }
@@ -85,4 +96,13 @@ export default {
 .list-wrap
   text-align: left
   margin-left: 1.1rem
+
+.filter-panel__buttons-container
+  margin-top: 1.5rem
+  display: flex
+  flex-direction: column
+  align-items: center
+  button
+    width: 170px
+    margin-bottom: 3px
 </style>

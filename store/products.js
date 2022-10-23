@@ -15,6 +15,15 @@ export const state = () => ({
       max: null,
     },
   },
+  filtersToApply: {
+    category: [],
+    discount: null,
+    price: {
+      min: null,
+      max: null,
+    },
+    limit: 6,
+  },
   appliedFilters: {
     category: [],
     discount: null,
@@ -30,8 +39,9 @@ export const state = () => ({
 
 export const getters = {
   products: (s) => s.products,
-  appliedFilters: (s) => s.appliedFilters,
   filters: (s) => s.filters,
+  filtersToApply: (s) => s.filtersToApply,
+  appliedFilters: (s) => s.appliedFilters,
   pagesLoaded: (s) => s.pagesLoaded,
   canLoadMorePages: (s) => s.canLoadMorePages,
 }
@@ -96,14 +106,26 @@ export const actions = {
 
       commit('updateFilters', filters)
       commit('resetAppliedFilters')
+      commit('resetFiltersToApply')
     } catch (err) {
       console.error('Failed to fetch filters from API:')
       console.error(err)
     }
   },
 
-  applyFilters({ commit }, newFilters) {
-    commit('updateAppliedFilters', newFilters)
+  updateFiltersToApply({ commit }, newFilters) {
+    commit('updateFiltersToApply', newFilters)
+  },
+
+  applyFilters({ getters, commit }) {
+    console.log('applyFilters')
+    commit('updateAppliedFilters', getters.filtersToApply)
+  },
+
+  resetFilters({ commit }) {
+    console.log('resetFilters')
+    commit('resetAppliedFilters')
+    commit('resetFiltersToApply')
   },
 }
 
@@ -117,12 +139,29 @@ export const mutations = {
     state.filters = newFilters
   },
 
+  updateFiltersToApply(state, newFilters) {
+    console.log('updateFiltersToApply')
+    state.filtersToApply = newFilters
+  },
+
   updateAppliedFilters(state, newFilters) {
     state.appliedFilters = newFilters
   },
 
   resetAppliedFilters(state) {
     state.appliedFilters = {
+      category: state.filters.category.map((x) => ({ ...x, checked: false })),
+      discount: null,
+      price: {
+        min: null,
+        max: null,
+      },
+      limit: 6,
+    }
+  },
+
+  resetFiltersToApply(state) {
+    state.filtersToApply = {
       category: state.filters.category.map((x) => ({ ...x, checked: false })),
       discount: null,
       price: {
