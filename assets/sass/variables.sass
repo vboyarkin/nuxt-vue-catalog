@@ -5,6 +5,22 @@ $color-inactive: #e7e7e9
 $bg-hover: #d2223f
 $shadow: 2px 2px 19px rgba(0, 0, 0, 0.11)
 
+@mixin size-small-up
+  @media screen and (min-width: 360px)
+    @content
+
+@mixin size-medium-up
+  @media screen and (min-width: 720px)
+    @content
+
+@mixin size-desktop-up
+  @media screen and (min-width: 1024px)
+    @content
+
+@mixin size-large-up
+  @media screen and (min-width: 1264px)
+    @content
+
 @mixin animation-bg($new-bg: $bg-hover, $state: hover)
   transition: background .15s ease-in-out
   &:#{$state}

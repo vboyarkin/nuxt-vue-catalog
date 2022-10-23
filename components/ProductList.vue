@@ -57,8 +57,9 @@ export default {
   flex-wrap: wrap
 
 .product-card
-  margin: 20px 44px
-  width: 200px
+  margin: 6px 4px
+  padding: 8px 22px 12px 22px
+  width: 187px
   height: 330px
 
 .item-list-placeholder, .item-list-loader-placeholder

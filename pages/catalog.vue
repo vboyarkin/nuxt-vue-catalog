@@ -17,13 +17,13 @@ export default {
 
 <style lang="sass" scoped>
 .container
-  display: grid
-  grid-template-columns: 300px
+  display: flex
+  > *
+    flex-grow: 0
+    flex-shrink: 0
 
 .filter-panel
   grid-column: 1
-  margin-left: 1rem
-
-.item-list
-  grid-column: 2
+  margin-right: 1rem
+  width: 260px
 </style>
