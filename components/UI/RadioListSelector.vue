@@ -5,6 +5,7 @@
       <input
         :id="'radio' + option.id"
         v-model="selectedOption"
+        :name="name"
         type="radio"
         :value="option.option"
       />
@@ -16,9 +17,17 @@
 <script>
 export default {
   props: {
+    name: {
+      type: String,
+      required: true
+    },
     options: {
       type: Array,
       required: true
+    },
+    checkedOption: {
+      type: [String, Number],
+      default: ''
     }
   },
   data() {
@@ -26,10 +35,17 @@ export default {
       selectedOption: {}
     }
   },
-  computed: {},
   watch: {
     selectedOption(selectedOption) {
       this.$emit('selection-change', selectedOption)
+    },
+    checkedOption(value) {
+      this.selectedOption = value
+    }
+  },
+  methods: {
+    onChange(e) {
+      this.$emit('selection-change', e.target.value)
     }
   }
 }

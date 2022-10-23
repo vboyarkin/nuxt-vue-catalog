@@ -118,12 +118,10 @@ export const actions = {
   },
 
   applyFilters({ getters, commit }) {
-    console.log('applyFilters')
     commit('updateAppliedFilters', getters.filtersToApply)
   },
 
   resetFilters({ commit }) {
-    console.log('resetFilters')
     commit('resetAppliedFilters')
     commit('resetFiltersToApply')
   },
@@ -140,7 +138,6 @@ export const mutations = {
   },
 
   updateFiltersToApply(state, newFilters) {
-    console.log('updateFiltersToApply')
     state.filtersToApply = newFilters
   },
 

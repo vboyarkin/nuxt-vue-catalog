@@ -19,7 +19,9 @@
     </RangeSelector>
     <RadioListSelector
       v-if="!isFetching"
+      name="discount-radio"
       :options="filters.discount"
+      :checked-option="filtersToApply.discount"
       @selection-change="onDiscountSelectionChange"
     >
       Размер скидки
