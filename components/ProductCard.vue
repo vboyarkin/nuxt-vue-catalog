@@ -3,7 +3,7 @@
     <div class="image-container">
       <img class="image" :src="item.image" alt="" srcset="" />
     </div>
-    <span class="price">${{ item.price }}</span>
+    <span class="price"> ${{ item.price }}</span>
     <div class="rating">
       <svg>
         <path
@@ -11,20 +11,22 @@
           d="M7 10l4 3-1-5 4-3H9L7 0 5 5H0l4 3-1 5 4-3z"
         ></path>
       </svg>
-      <span v-if="item.rating.count" class="rating-rate">{{
-        item.rating.rate
-      }}</span>
-      <span class="rating-count">{{
-        (item.rating.count ? item.rating.count : 'нет') + ' отзывов'
-      }}</span>
+      <span v-if="item.rating.count" class="rating-rate">
+        {{ item.rating.rate }}</span
+      >
+      <span class="rating-count">
+        {{ (item.rating.count ? item.rating.count : 'нет') + ' отзывов' }}</span
+      >
     </div>
     <span class="title">{{ item.title }}</span>
-    <button class="cart-btn">В корзину</button>
+    <BaseButton>В корзину</BaseButton>
   </div>
 </template>
 
 <script>
+import BaseButton from './UI/BaseButton.vue'
 export default {
+  components: { BaseButton },
   props: {
     item: {
       type: Object,
@@ -84,15 +86,4 @@ svg
 
 .title
   margin: 3px 0px 18px 0px
-
-button
-  color: white
-  background: $color-active
-  border: none
-  border-radius: 3px
-  padding: 8px 0px
-  margin: 0px
-  font-family: inherit
-  cursor: pointer
-  @include animation-bg
 </style>
