@@ -38,7 +38,7 @@ export default {
 
 <style lang="sass" scoped>
 .item-card
-  box-shadow: 2px 2px 4px rgb(0 0 0 / 5%)
+  box-shadow: $light-shadow
   display: flex
   flex-direction: column
 

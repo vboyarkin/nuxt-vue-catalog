@@ -11,7 +11,7 @@
         →
       </LongTriggerButton>
     </div>
-    <ProductList />
+    <ProductList class="product-list" />
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
 <style lang="sass" scoped>
 .container
   display: flex
+  align-items: flex-start
 
 
 .filter-panel-container
@@ -59,6 +60,23 @@ export default {
   margin: 5px
   width: 260px
   overflow-y: auto
+
+
+.product-list
+  max-width: 250px
+
+@include size-small-up
+  .product-list
+    max-width: 484px
+@include size-medium-up
+  .product-list
+    max-width: 725px
+@include size-desktop-up
+  .container
+    max-width: 1024px
+@include size-large-up
+  .container
+    max-width: 1064px
 
 .hide-filters
   @include size-desktop-up

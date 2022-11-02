@@ -18,14 +18,4 @@ body
   display: flex
   justify-content: center
   width: 100%
-
-.wrap
-  @include size-small-up
-    max-width: 360px
-  @include size-medium-up
-    max-width: 720px
-  @include size-desktop-up
-    max-width: 1024px
-  @include size-large-up
-    max-width: 1264px
 </style>

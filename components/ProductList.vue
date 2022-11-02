@@ -52,14 +52,13 @@ export default {
 
 <style lang="sass" scoped>
 .item-list
-  float: left
   display: flex
   flex-wrap: wrap
 
 .product-card
   margin: 6px 4px
   padding: 8px 22px 12px 22px
-  border: solid 1px rgb(0 0 0 / 10%)
+  border: $light-border
   border-radius: 5px
   width: 187px
   height: 330px
