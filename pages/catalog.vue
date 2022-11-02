@@ -1,17 +1,28 @@
 <template>
   <div class="container">
-    <FilterPanel class="filter-panel" />
-    <ProductList class="item-list" />
+    <div class="filter-panel-container" :class="{ hidden: hideFilterPanel }">
+      <FilterPanel class="filter-panel" />
+      <LongTriggerButton
+        v-model="hideFilterPanel"
+        class="hide-filters"
+        :rotate-content="true"
+        :rotated-by-default="true"
+      >
+        →
+      </LongTriggerButton>
+    </div>
+    <ProductList />
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import LongTriggerButton from '~/components/LongTriggerButton.vue'
 export default {
   name: 'App',
-  methods: {
-    ...mapActions(['products/fetchProductsNextPage'])
-  }
+  components: { LongTriggerButton },
+  data: () => ({
+    hideFilterPanel: true
+  })
 }
 </script>
 
