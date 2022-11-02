@@ -18,4 +18,7 @@ body
   display: flex
   justify-content: center
   width: 100%
+
+.wrap
+  margin-top: 8px
 </style>

@@ -34,6 +34,7 @@ export default {
 
 .filter-panel-container
   border: $light-border
+  border-radius: $border-radius
   background-color: $bg-color
   display: flex
   position: fixed

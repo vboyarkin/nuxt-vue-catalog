@@ -56,10 +56,10 @@ export default {
   flex-wrap: wrap
 
 .product-card
-  margin: 6px 4px
+  margin: 0px 4px 12px 4px
   padding: 8px 22px 12px 22px
   border: $light-border
-  border-radius: 5px
+  border-radius: $border-radius
   width: 187px
   height: 330px
 
