@@ -8,13 +8,12 @@
         :item="item"
       />
     </div>
-
-    <div
-      v-if="!isFetchingProducts && items && items.length === 0"
+    <TextFiller
+      v-if="showNoProductsPlaceholder"
       class="item-list-placeholder"
+      :size="large"
+      >Нет подходящих товаров</TextFiller
     >
-      <span>Нет подходящих товаров</span>
-    </div>
 
     <Loader v-if="isFetchingProducts && canLoadMorePages" size="large" />
 
@@ -28,10 +27,11 @@
 import { mapGetters } from 'vuex'
 import ProductCard from './ProductCard.vue'
 import Loader from './UI/Loader.vue'
+import TextFiller from './UI/TextFiller.vue'
 import BaseIntersector from './BaseIntersector.vue'
 
 export default {
-  components: { ProductCard, Loader, BaseIntersector },
+  components: { ProductCard, Loader, BaseIntersector, TextFiller },
   async fetch() {
     await this.$store.dispatch('products/fetchProductsNextPage')
   },
@@ -40,7 +40,10 @@ export default {
       items: 'products/products',
       canLoadMorePages: 'products/canLoadMorePages',
       isFetchingProducts: 'products/isFetchingProducts'
-    })
+    }),
+    showNoProductsPlaceholder() {
+      return !this.isFetchingProducts && this.items && this.items.length === 0
+    }
   },
   methods: {
     loadMore() {
@@ -63,11 +66,12 @@ export default {
   width: 187px
   height: 330px
 
-.item-list-placeholder, .item-list-loader-placeholder
-  width: 100%
-  display: flex
-  justify-content: center
-  align-items: center
+// .item-list-placeholder, .item-list-loader-placeholder
+//   width: 100%
+//   display: flex
+//   justify-content: center
+//   align-items: center
+
 
   span
     font-size: 2.5rem

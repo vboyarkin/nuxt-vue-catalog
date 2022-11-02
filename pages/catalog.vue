@@ -64,20 +64,20 @@ export default {
 
 
 .product-list
-  max-width: 250px
+  width: 250px
 
 @include size-small-up
   .product-list
-    max-width: 484px
+    width: 484px
 @include size-medium-up
   .product-list
-    max-width: 725px
+    width: 725px
 @include size-desktop-up
   .container
-    max-width: 1024px
+    width: 1024px
 @include size-large-up
   .container
-    max-width: 1064px
+    width: 1064px
 
 .hide-filters
   @include size-desktop-up
