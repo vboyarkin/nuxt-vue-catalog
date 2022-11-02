@@ -2,11 +2,14 @@ $main-font: Roboto, Avenir, Helvetica, Arial, sans-serif
 
 $color-active: #e83e5a
 $color-inactive: #e7e7e9
+$bg-color: white
 $bg-hover: #d2223f
 $shadow: 2px 2px 19px rgba(0, 0, 0, 0.11)
+$light-shadow: 2px 2px 4px rgb(0 0 0 / 5%)
+$light-border: solid 1px rgb(0 0 0 / 10%)
 
 @mixin size-small-up
-  @media screen and (min-width: 360px)
+  @media screen and (min-width: 480px)
     @content
 
 @mixin size-medium-up

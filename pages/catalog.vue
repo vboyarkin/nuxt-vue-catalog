@@ -29,12 +29,38 @@ export default {
 <style lang="sass" scoped>
 .container
   display: flex
+
+
+.filter-panel-container
+  border: $light-border
+  background-color: $bg-color
+  display: flex
+  position: fixed
+  top:0
+  bottom: 0
+
   > *
     flex-grow: 0
     flex-shrink: 0
 
+  transition: left .15s ease-in-out
+  left: 0px
+  &.hidden
+    left: -270px
+
+
+  box-shadow: $shadow
+
+  @include size-desktop-up
+    box-shadow: none
+    position: static
+
 .filter-panel
-  grid-column: 1
-  margin-right: 1rem
+  margin: 5px
   width: 260px
+  overflow-y: auto
+
+.hide-filters
+  @include size-desktop-up
+    display: none
 </style>
